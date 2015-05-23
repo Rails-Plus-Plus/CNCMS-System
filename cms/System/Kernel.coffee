@@ -16,6 +16,29 @@ class Kernel
   createHookable: (name) ->
     throw new NotImplementedError "Kernel.createHookable - Not implemented."
 
+  runCmd: (command, args, sync) ->
+    output = ""
+    done = false
+    console.log "#{command} #{args}"
+    child = spawn process.env.SHELL, ["-c", "#{command} #{args}"], {
+      "cwd": process.cwd
+      "env": process.env
+    }
+
+    child.stdout.on "data", (data) ->
+      console.log "" + data
+
+    child.stderr.on "data", (data) ->
+      console.log "" + data
+
+    child.on "close", (code) ->
+      console.log "#{command} exited with code #{code}."
+      done = true
+
+    if sync
+      (->) until done
+    return output
+
   hook: (hookName, callback) ->
     throw new NotImplementedError "Kernel.hook - Not implemented."
 
