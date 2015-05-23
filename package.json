@@ -1,0 +1,15 @@
+{
+  "name": "coffeenode-cms",
+  "version": "0.0.0",
+  "description": "A CMS written in CoffeeScript, using node.js.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CMS",
+    "CoffeeScript"
+  ],
+  "author": "Alex Martin",
+  "license": "GPL-3.0"
+}
