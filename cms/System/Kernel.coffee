@@ -42,8 +42,9 @@ class Kernel
   hook: (hookName, callback) ->
     throw new NotImplementedError "Kernel.hook - Not implemented."
 
-  load: (module) ->
-    require("../" + module)
+  load: (mname) ->
+    delete require.cache[require.resolve mname]
+    return require mname
 
   getSiteName: () ->
     "A CoffeeNode CMS site"
