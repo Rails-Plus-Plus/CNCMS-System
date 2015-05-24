@@ -44,6 +44,9 @@ class Kernel
   hook: (hookName, callback) ->
     @hooks[hookName].append callback
 
+  preprocess: (code) ->
+    throw new NotImplementedError "Kernel.preprocess - Not implemented."
+
   load: (mname) ->
     delete require.cache[require.resolve mname]
     return require mname
