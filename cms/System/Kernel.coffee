@@ -53,7 +53,7 @@ class Kernel
 
   getApp: (name) ->
     console.log "#{new Date()}: Getting app config for '#{name}'..."
-    appConfig = @load "../#{name}/app"
+    appConfig = @load "#{name}/app"
     console.log "#{new Date()}: Loading #{appConfig.mainClass}..."
     @load "#{name}/#{appConfig.mainClass}"
 
@@ -64,7 +64,7 @@ class Kernel
     else if url.match /\/app\/.+\/.*/
       urlMatchResults = url.match /\/app\/(.+)\/.*/
       appName = urlMatchResults[1]
-      console.log "#{new Date()}: Getting app '#{appName}''..."
+      console.log "#{new Date()}: Getting app '#{appName}'..."
       app = @getApp appName
       content = app.get(url, post)
     else if fs.existsSync("../../" + url + ".js")
