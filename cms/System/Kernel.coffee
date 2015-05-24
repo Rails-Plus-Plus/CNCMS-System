@@ -14,7 +14,7 @@ class Kernel
   hooks = {}
 
   constructor: () ->
-    throw new NotImplementedError "Attempt to construct a singleton class!" if kernelCreated
+    throw new Error "Attempt to construct a singleton class!" if kernelCreated
 
   createHookable: (name) ->
     @hooks[name] = {}
