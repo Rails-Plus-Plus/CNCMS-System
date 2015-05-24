@@ -10,11 +10,13 @@ class NotImplementedError
     "NotImplementedError: #{@msg}"
 
 class Kernel
+  hooks = {}
+
   constructor: () ->
     throw new NotImplementedError "Attempt to construct a singleton class!" if kernelCreated
 
   createHookable: (name) ->
-    throw new NotImplementedError "Kernel.createHookable - Not implemented."
+    @hooks[name] = {}
 
   runCmd: (command, args, sync) ->
     output = ""
@@ -40,7 +42,7 @@ class Kernel
     return output
 
   hook: (hookName, callback) ->
-    throw new NotImplementedError "Kernel.hook - Not implemented."
+    @hooks[hookName].append callback
 
   load: (mname) ->
     delete require.cache[require.resolve mname]
