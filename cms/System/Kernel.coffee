@@ -12,7 +12,7 @@ class NotImplementedError extends Error
 
 class Kernel
   hooks = {}
-  idleJobs = {}
+  idleJobs = []
 
   constructor: ->
     throw new Error "Attempt to construct a singleton class!" if kernelCreated
@@ -76,7 +76,7 @@ class Kernel
 
   onIdle: =>
     job = idleJobs.shift()
-    job[0](job[1]...)
+    job[0](job[1]...) if job?
 
 
 module.exports = new Kernel
