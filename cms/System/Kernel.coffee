@@ -1,4 +1,5 @@
 CoffeeScript = require "coffee-script"
+spawn = require "child_process"
 fs = require "fs"
 
 kernelCreated = false
