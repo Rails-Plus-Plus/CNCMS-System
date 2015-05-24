@@ -19,28 +19,22 @@ class Kernel
   createHookable: (name) ->
     @hooks[name] = {}
 
-  runCmd: (command, args, sync) ->
+  runCmd: (command, args, print, callback) ->
     output = ""
-    done = false
-    console.log "#{command} #{args}"
+    console.log "#{command} #{args}" if print
     child = spawn process.env.SHELL, ["-c", "#{command} #{args}"], {
       "cwd": process.cwd
       "env": process.env
     }
 
     child.stdout.on "data", (data) ->
-      console.log "" + data
+      console.log "#{command} #{args}: #{data}" if print
 
     child.stderr.on "data", (data) ->
-      console.log "" + data
+      console.log "#{command} #{args}: #{data}" if print
 
     child.on "close", (code) ->
-      console.log "#{command} exited with code #{code}."
-      done = true
-
-    if sync
-      (->) until done
-    return output
+      callback output, code
 
   hook: (hookName, callback) ->
     @hooks[hookName].append callback
