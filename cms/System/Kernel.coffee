@@ -62,6 +62,7 @@ class Kernel
     else if url.match /\/app\/.+\/.*/
       urlMatchResults = url.match /\/app\/(.+)\/.*/
       appName = urlMatchResults[1]
+      console.log "#{new Date()}: Getting app '#{appName}''..."
       app = @getApp appName
       content = app.get(url, post)
     else if fs.existsSync("../../" + url + ".js")
