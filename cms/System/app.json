@@ -1,0 +1,19 @@
+{
+  "appName": "System",
+  "authors": ["Alex Martin"],
+  "version": 1.0,
+  "description": "Required core components of CoffeeNode CMS.",
+  "mainClass": "Kernel",
+  "classes": {
+    "Kernel": {
+      "source": "Kernel.coffee",
+      "compiled": "Kernel.js",
+      "precompiled": true,
+      "authors": ["Alex Martin"],
+      "version": 1.0,
+      "description": "The CoffeeNode CMS kernel.",
+      "since": 1.0,
+      "static": true
+    }
+  }
+}
