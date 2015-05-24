@@ -15,7 +15,7 @@ class Kernel
   idleJobs = []
 
   constructor: ->
-    throw new Error "Attempt to construct a singleton class!" if kernelCreated
+    throw new Error "Attempt to construct more of a singleton class!" if kernelCreated
 
   createHookable: (name) ->
     @hooks[name] = {}
