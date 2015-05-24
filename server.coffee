@@ -39,8 +39,8 @@ try
   try
     console.log "Detected running directly in CoffeeScript! Cool!" if process.argv[0] == "coffee"
     console.log "#{new Date()}: Setting up HTTP server on #{host}:#{port}..."
+    Kernel.onIdle()
     server.listen(port, host)
-    setImmediate Kernel.onIdle
   catch error
     console.log "Could not start server! #{error}"
 catch error
