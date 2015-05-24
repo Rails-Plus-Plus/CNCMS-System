@@ -13,7 +13,7 @@ class NotImplementedError extends Error
 class Kernel
   hooks = {}
 
-  constructor: () ->
+  constructor: ->
     throw new Error "Attempt to construct a singleton class!" if kernelCreated
 
   createHookable: (name) ->
@@ -47,7 +47,7 @@ class Kernel
     delete require.cache[require.resolve mloc]
     return require mloc
 
-  getSiteName: () ->
+  getSiteName: ->
     "A CoffeeNode CMS site"
 
   getApp: (name) ->
