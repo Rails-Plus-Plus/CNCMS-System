@@ -4,7 +4,7 @@ fs = require "fs"
 
 kernelCreated = false
 
-class NotImplementedError
+class NotImplementedError extends Error
   constructor: (@msg) ->
 
   toString: () ->
