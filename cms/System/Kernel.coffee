@@ -80,6 +80,7 @@ class Kernel
   onIdle: =>
     job = idleJobs.shift()
     job[0](job[1]...) if job?
+    setImmediate @onIdle
 
 
 module.exports = new Kernel

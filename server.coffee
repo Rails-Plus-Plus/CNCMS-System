@@ -23,7 +23,6 @@ try
       console.log "#{new Date()}: Headers sent for #{requestURL.pathname}."
       response.end content
       console.log "#{new Date()}: Content sent for #{requestURL.pathname}. Done with request."
-      setImmediate Kernel.onIdle
       return true
     catch error
       console.log "#{new Date()}: Exception thrown while handling request. Exception is a #{error}"
@@ -41,6 +40,7 @@ try
     console.log "Detected running directly in CoffeeScript! Cool!" if process.argv[0] == "coffee"
     console.log "#{new Date()}: Setting up HTTP server on #{host}:#{port}..."
     server.listen(port, host)
+    setImmediate Kernel.onIdle
   catch error
     console.log "Could not start server! #{error}"
 catch error
