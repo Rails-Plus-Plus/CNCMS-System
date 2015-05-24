@@ -3,9 +3,8 @@ fs = require "fs"
 util = require "util"
 spawn = require("child_process").spawn
 
-system = (command, args, sync) ->
+system = (command, args) ->
   output = ""
-  done = false
   console.log "#{command} #{args}"
   child = spawn process.env.SHELL, ["-c", "#{command} #{args}"], {
     "cwd": process.cwd
@@ -22,8 +21,6 @@ system = (command, args, sync) ->
     console.log "#{command} exited with code #{code}."
     done = true
 
-  if sync
-    (->) until done
   return output
 
 compile = (source) ->
@@ -34,22 +31,22 @@ option "-p", "--port [PORT]", "Specify a port to listen on when running"
 
 task "compile:server.js", "Build the CoffeeNode CMS HTTP server", (options) ->
   throw "Missing source file server.coffee!" if not fs.existsSync "server.coffee"
-  compile "server.coffee", true
+  compile "server.coffee"
 
 task "compile:cms/System/Kernel.js", "Build the CoffeeNode CMS Kernel", (options) ->
   throw "Missing source file cms/System/Kernel.coffee!" if not fs.existsSync "cms/System/Kernel.coffee"
-  compile "cms/System/Kernel.coffee", true
+  compile "cms/System/Kernel.coffee"
 
 task "compile", "Compile CoffeeNode CMS CoffeeScript files to JS", (options) ->
   invoke "compile:cms/System/Kernel.js"
   invoke "compile:server.js"
 
 task "clean", "Remove build products", (options) ->
-  system "rm", "server.js", true
-  system "rm", "cms/System/Kernel.js", true
+  system "rm", "server.js"
+  system "rm", "cms/System/Kernel.js"
 
 task "run", "Compile CoffeeNode CMS and run the HTTP server", (options) ->
   invoke "compile"
   `setTimeout(function() {
-    system("node", "server.js " + options.hostname + " " + options.port, false)
+    system("node", "server.js " + options.hostname + " " + options.port)
   }, 1500)` # Wait 1.5 seconds for compilation to finish.
