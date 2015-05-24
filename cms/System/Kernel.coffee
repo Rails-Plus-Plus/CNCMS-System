@@ -52,7 +52,9 @@ class Kernel
     "A CoffeeNode CMS site"
 
   getApp: (name) ->
+    console.log "#{new Date()}: Getting app config for '#{name}'..."
     appConfig = @load "../#{name}/app"
+    console.log "#{new Date()}: Loading #{appConfig.mainClass}..."
     @load "#{name}/#{appConfig.mainClass}"
 
   getPage: (url, post) ->
