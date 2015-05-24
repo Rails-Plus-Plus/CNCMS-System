@@ -37,7 +37,7 @@ class Kernel
       callback output, code
 
   hook: (hookName, callback) ->
-    @hooks[hookName].append callback
+    @hooks[hookName].push callback
 
   preprocess: (code) ->
     throw new NotImplementedError "Kernel.preprocess - Not implemented."
