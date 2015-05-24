@@ -81,9 +81,9 @@ class Kernel
     job = idleJobs.shift()
     if job?
       if idleJobs is []
-        console.log "#{new Date()}: Idling. Next jobs are: #{idleJobs}. This job is: #{job}."
+        console.log "#{new Date()}: Idling. Next jobs are: #{idleJobs}. This job is: { #{job.callback}, #{job.args} }."
       else
-        console.log "#{new Date()}: Idling. No more jobs after this one. This job is: #{job}."
+        console.log "#{new Date()}: Idling. No more jobs after this one. This job is: { #{job.callback}, #{job.args} }."
       jobf = job.callback
       jobf job.args...
     setImmediate @onIdle
