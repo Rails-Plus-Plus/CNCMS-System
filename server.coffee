@@ -23,6 +23,7 @@ try
       console.log "#{new Date()}: Headers sent for #{requestURL.pathname}."
       response.end content
       console.log "#{new Date()}: Content sent for #{requestURL.pathname}. Done with request."
+      process.nextTick Kernel.onIdle
       return true
     catch error
       console.log "#{new Date()}: Exception thrown while handling request. Exception is a #{error}"

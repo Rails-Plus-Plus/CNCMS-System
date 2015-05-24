@@ -12,6 +12,7 @@ class NotImplementedError extends Error
 
 class Kernel
   hooks = {}
+  idleJobs = {}
 
   constructor: ->
     throw new Error "Attempt to construct a singleton class!" if kernelCreated
@@ -69,5 +70,13 @@ class Kernel
     else
       content = [404, "<html>\n  <head>\n    <title>#{@getSiteName()} - Error 404</title>\n  </head>\n  <body>\n    <h1>Error 404: Not found</h1>\n    <p>The Application or Page at #{url} could not be found.</p>\n  </body>\n</html>"]
     return content
+
+  addIdleJob: (callback, args...) ->
+    idleJobs.push {callback, args}
+
+  onIdle: =>
+    job = idleJobs.shift()
+    job[0](job[1]...)
+
 
 module.exports = new Kernel
