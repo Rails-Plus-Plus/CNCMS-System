@@ -1,5 +1,5 @@
 chai = require "chai"
-chai.should()
+should = chai.should()
 require "../src/cms/System/Kernel"
 
 describe "Kernel", ->
@@ -48,13 +48,15 @@ describe "Kernel", ->
       Kernel.fireHookable "Hello.set", val
       @msg = val
   """
-  page404 = "<html>\n  <head>\n    <title>#{@getSiteName()} - Error 404</title>\n  </head>\n  <body>\n    <h1>Error 404: Not found</h1>\n    <p>The Application or Page at #{url} could not be found.</p>\n  </body>\n</html>"
+  page404 = "<html>\n  <head>\n    <title>A CoffeeNode CMS site - Error 404</title>\n  </head>\n  <body>\n    <h1>Error 404: Not found</h1>\n    <p>The Application or Page at /doesnotexistorifitdoesthatsweird could not be found.</p>\n  </body>\n</html>"
 
-  it "should exist", ->
-    should.exist Kernel
+  it "should be an object", ->
+    Kernel.should.be.an "object"
 
   it "should be able to preprocess code", ->
     Kernel.preprocess(code, appConfig).should.equal codePreProcessed
 
   it "should return a 404 page for non-existant pages", ->
-    Kernel.getPage("/doesnotexistorifitdoesthatsweird").should.equal page404
+    result = Kernel.getPage "/doesnotexistorifitdoesthatsweird"
+    result[0].should.equal 404
+    result[1].should.equal page404
