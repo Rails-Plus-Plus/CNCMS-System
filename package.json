@@ -14,5 +14,9 @@
   "license": "GPL-3.0",
   "dependencies": {
     "coffee-script": ">=1.9.2"
+  },
+  "devDependencies": {
+    "mocha": ">=2.2.5",
+    "chai": ">=2.3.0"
   }
 }

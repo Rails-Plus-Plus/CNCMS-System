@@ -28,18 +28,22 @@ compile = (source) ->
 
 option "-h", "--hostname [HOSTNAME]", "Specify a hostname to listen on when running"
 option "-p", "--port [PORT]", "Specify a port to listen on when running"
+option "-T", "--test [OPTION]", "Specify options for tests."
 
-task "compile:server.js", "Build the CoffeeNode CMS HTTP server", (options) ->
-  throw "Missing source file server.coffee!" if not fs.existsSync "server.coffee"
-  compile "server.coffee"
+task "compile:src/server.js", "Build the CoffeeNode CMS HTTP server", (options) ->
+  throw "Missing source file src/server.coffee!" if not fs.existsSync "src/server.coffee"
+  compile "src/server.coffee"
 
-task "compile:cms/System/Kernel.js", "Build the CoffeeNode CMS Kernel", (options) ->
-  throw "Missing source file cms/System/Kernel.coffee!" if not fs.existsSync "cms/System/Kernel.coffee"
-  compile "cms/System/Kernel.coffee"
+task "compile:src/cms/System/Kernel.js", "Build the CoffeeNode CMS Kernel", (options) ->
+  throw "Missing source file src/cms/System/Kernel.coffee!" if not fs.existsSync "src/cms/System/Kernel.coffee"
+  compile "src/cms/System/Kernel.coffee"
 
 task "compile", "Compile CoffeeNode CMS CoffeeScript files to JS", (options) ->
-  invoke "compile:cms/System/Kernel.js"
-  invoke "compile:server.js"
+  invoke "compile:src/cms/System/Kernel.js"
+  invoke "compile:src/server.js"
+
+task "build", "Build CoffeeNode CMS to production usability", (options) ->
+  invoke "compile"
 
 task "clean", "Remove build products", (options) ->
   system "rm", "server.js"

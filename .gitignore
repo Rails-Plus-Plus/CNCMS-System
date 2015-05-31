@@ -1,4 +1,4 @@
-server.js
-cms/System/Kernel.js
+src/server.js
+src/cms/System/Kernel.js
 # Mac OS X
 .DS_Store
