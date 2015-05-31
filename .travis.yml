@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "node"
   - "iojs"
-script: cake build
+script: cake build; coffee -c test/KernelTests.coffee; mocha -R spec
