@@ -1,4 +1,5 @@
 # System
+[![Build Status](https://travis-ci.org/CoffeeNode-CMS/System.svg?branch=master)](https://travis-ci.org/CoffeeNode-CMS/System)
 The main CoffeeNode CMS system.
 
 CoffeeNode CMS is a Content Managment System built in CoffeeScript and designed to run on Node.js.
