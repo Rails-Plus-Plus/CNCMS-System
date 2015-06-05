@@ -136,6 +136,12 @@ module.exports = function (chai, _) {
    *     expect({ foo: 'bar' }).to.be.an('object');
    *     expect(null).to.be.a('null');
    *     expect(undefined).to.be.an('undefined');
+   *     expect(new Promise).to.be.a('promise');
+   *     expect(new Float32Array()).to.be.a('float32array');
+   *     expect(Symbol()).to.be.a('symbol');
+   *
+   *     // es6 overrides
+   *     expect({[Symbol.toStringTag]:()=>'foo'}).to.be.a('foo');
    *
    *     // language chain
    *     expect(foo).to.be.an.instanceof(Foo);
@@ -835,7 +841,7 @@ module.exports = function (chai, _) {
         ? pathInfo.value
         : obj[name];
 
-    if (negate && undefined !== val) {
+    if (negate && arguments.length > 1) {
       if (undefined === value) {
         msg = (msg != null) ? msg + ': ' : '';
         throw new Error(msg + _.inspect(obj) + ' has no ' + descriptor + _.inspect(name));
@@ -847,7 +853,7 @@ module.exports = function (chai, _) {
         , 'expected #{this} to not have ' + descriptor + _.inspect(name));
     }
 
-    if (undefined !== val) {
+    if (arguments.length > 1) {
       this.assert(
           val === value
         , 'expected #{this} to have a ' + descriptor + _.inspect(name) + ' of #{exp}, but got #{act}'
@@ -938,16 +944,10 @@ module.exports = function (chai, _) {
   Assertion.addMethod('haveOwnPropertyDescriptor', assertOwnPropertyDescriptor);
 
   /**
-   * ### .length(value)
+   * ### .length
    *
-   * Asserts that the target's `length` property has
-   * the expected value.
-   *
-   *     expect([ 1, 2, 3]).to.have.length(3);
-   *     expect('foobar').to.have.length(6);
-   *
-   * Can also be used as a chain precursor to a value
-   * comparison for the length property.
+   * Sets the `doLength` flag later used as a chain precursor to a value
+   * comparison for the `length` property.
    *
    *     expect('foo').to.have.length.above(2);
    *     expect([ 1, 2, 3 ]).to.have.length.above(2);
@@ -956,8 +956,25 @@ module.exports = function (chai, _) {
    *     expect('foo').to.have.length.within(2,4);
    *     expect([ 1, 2, 3 ]).to.have.length.within(2,4);
    *
+   * *Deprecation notice:* Using `length` as an assertion will be deprecated
+   * in version 2.4.0 and removed in 3.0.0. Code using the old style of
+   * asserting for `length` property value using `length(value)` should be
+   * switched to use `lengthOf(value)` instead.
+   *
    * @name length
-   * @alias lengthOf
+   * @api public
+   */
+
+  /**
+   * ### .lengthOf(value[, message])
+   *
+   * Asserts that the target's `length` property has
+   * the expected value.
+   *
+   *     expect([ 1, 2, 3]).to.have.lengthOf(3);
+   *     expect('foobar').to.have.lengthOf(6);
+   *
+   * @name lengthOf
    * @param {Number} length
    * @param {String} message _optional_
    * @api public
@@ -993,12 +1010,12 @@ module.exports = function (chai, _) {
    *     expect('foobar').to.match(/^foo/);
    *
    * @name match
+   * @alias matches
    * @param {RegExp} RegularExpression
    * @param {String} message _optional_
    * @api public
    */
-
-  Assertion.addMethod('match', function (re, msg) {
+  function assertMatch(re, msg) {
     if (msg) flag(this, 'message', msg);
     var obj = flag(this, 'object');
     this.assert(
@@ -1006,7 +1023,10 @@ module.exports = function (chai, _) {
       , 'expected #{this} to match ' + re
       , 'expected #{this} not to match ' + re
     );
-  });
+  }
+
+  Assertion.addMethod('match', assertMatch);
+  Assertion.addMethod('matches', assertMatch);
 
   /**
    * ### .string(string)
@@ -1063,7 +1083,7 @@ module.exports = function (chai, _) {
    *     expect({ foo: 1, bar: 2 }).to.have.all.keys(['bar', 'foo']);
    *     expect({ foo: 1, bar: 2 }).to.have.all.keys({'bar': 6, 'foo': 7});
    *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys(['bar', 'foo']);
-   *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys([{'bar': 6}}]);
+   *     expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys({'bar': 6});
    *
    *
    * @name keys
@@ -1255,7 +1275,7 @@ module.exports = function (chai, _) {
       }
 
       // next, check message
-      var message = 'object' === _.type(err) && "message" in err
+      var message = 'error' === _.type(err) && "message" in err
         ? err.message
         : '' + err;
 
