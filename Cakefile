@@ -49,6 +49,9 @@ task "clean", "Remove build products", (options) ->
   system "rm", "server.js"
   system "rm", "cms/System/Kernel.js"
 
+task "test", "Do a test of the System using Mocha", (options) ->
+  system "mocha", "--compilers coffee:coffee-script/register -R spec"
+
 task "run", "Compile CoffeeNode CMS and run the HTTP server", (options) ->
   invoke "compile"
   `setTimeout(function() {

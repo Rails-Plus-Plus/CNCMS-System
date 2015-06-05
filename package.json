@@ -4,7 +4,7 @@
   "description": "A CMS written in CoffeeScript, using node.js.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Connect to 'localhost:8080' in a web browser. Try the pages '/', '/nope', and '/app/pages/home'.\"; cake run localhost 8080"
+    "test": "cake test"
   },
   "keywords": [
     "CMS",
