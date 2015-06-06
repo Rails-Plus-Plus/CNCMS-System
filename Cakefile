@@ -3,13 +3,14 @@ fs = require "fs"
 util = require "util"
 spawn = require("child_process").spawn
 
-system = (command, args) ->
+system = (command, args, callback) ->
   output = ""
   console.log "#{command} #{args}"
   child = spawn process.env.SHELL, ["-c", "#{command} #{args}"], {
     "cwd": process.cwd
     "env": process.env
   }
+  code = null;
 
   child.stdout.on "data", (data) ->
     console.log "" + data
@@ -17,11 +18,9 @@ system = (command, args) ->
   child.stderr.on "data", (data) ->
     console.log "" + data
 
-  child.on "close", (code) ->
-    console.log "#{command} exited with code #{code}."
-    done = true
-
-  return output
+  child.on "close", (res) ->
+    console.log "#{command} exited with code #{res}."
+    callback code if callback?
 
 compile = (source) ->
   system "coffee", "-c #{source}"
@@ -50,7 +49,8 @@ task "clean", "Remove build products", (options) ->
   system "rm", "cms/System/Kernel.js"
 
 task "test", "Do a test of the System using Mocha", (options) ->
-  system "mocha", "--compilers coffee:coffee-script/register -R spec"
+  system "mocha", "--compilers coffee:coffee-script/register -R spec", (code) ->
+    process.exit code
 
 task "run", "Compile CoffeeNode CMS and run the HTTP server", (options) ->
   invoke "compile"
