@@ -20,7 +20,15 @@ system = (command, args, callback) ->
 
   child.on "close", (res) ->
     console.log "#{command} exited with code #{res}."
-    callback code if callback?
+    code = res
+
+  wait = () ->
+    if not code?
+      setTimeout wait, 1
+    else
+      callback code if callback?
+
+  wait()
 
 compile = (source) ->
   system "coffee", "-c #{source}"
